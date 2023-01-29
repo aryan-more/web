@@ -1,16 +1,21 @@
 package main
 
 import (
-	"net/http"
+	"log"
 
 	"github.com/labstack/echo/v4"
 )
 
+const deploy = false
+
 func main() {
 	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
+	e.Static("/", "/static")
 
-		return c.String(http.StatusOK, "Coming soon")
-	})
-	e.Start(":80")
+	if deploy {
+		log.Fatal(e.StartAutoTLS("aryanmore.us.to"))
+	} else {
+		log.Fatal(e.Start(":80"))
+	}
+
 }
